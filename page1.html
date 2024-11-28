@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Propellers</title>
+    <link rel="shortcut icon" href="images/p alphabet.webp" type="image/x-icon">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+        }
+        main{
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            align-items: center; 
+            justify-content: center;
+        }
+        .container {
+            background-color: blue;
+            margin: auto;
+            padding: 20px;
+            width: 40%;
+            height: auto;
+            box-shadow: 10px 10px 5px rgba(0, 0, 0, 0.7);
+            border-radius: 10px;
+        }
+        h1 {
+            color: darkred;
+            text-align: center;
+        }
+
+        form {
+            margin: auto;
+            width: 80%;
+            text-align: center;
+            h2{
+            color: white;
+            text-align: left;
+            font-size: 18px;
+        }
+        }
+        form input {
+            width: 100%;
+            padding: 15px;
+            margin: 20px auto;
+            margin-bottom: -2px;
+            border-radius: 5px;
+            border: 2px solid darkred;
+            box-sizing: border-box;
+        }
+        form button {
+            width: 100%;
+            padding: 13px;
+            margin: 20px auto;
+            border-radius: 5px;
+            color: white;
+            background-color: green;
+            font-size: 18px;
+            cursor: pointer;
+        }
+        form button:active {
+            background-color: darkred;
+        }
+
+        /* Mobile Screen */
+        @media (max-width: 720px) {
+            .container {
+                width: 65%;
+            }
+        }
+
+        @media (max-width: 580px) {
+            .container {
+                width: 85%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <button id="openButton" onclick="togglemenu()">
+            <span></span>
+            <span></span>
+            <span></span>   
+        </button>
+
+        <div id="sidebar">
+            <button id="closeButton" onclick="togglemenu()">X</button>
+
+        <ul>
+            <li><a href="index.html"><i class="fas fa-download"></i> Video</i></a></li>
+            <li><a href="page1.html"><i class="fas fa-download"></i> Files</a></li>
+            <li><a href="#"><i class="fas fa-info-circle"></i> About Us</a></li>
+            <li><a href="#"><i class="fas fa-shield-alt"></i> Privacy</a></li>
+            <li><a href="#"><i class="fas fa-comment-alt"></i> Feedback</a></li>
+        </ul>
+        </div>
+    </header>
+
+    <main>
+    <div class="container">
+        <h1>Propellers</h1>
+
+        <form id="downloader-form">
+            <h2>The Files Downloader:</h2>
+            <input type="url" id="url-input" placeholder="Paste File URL..." required>
+            <br>
+            <button type="button" id="download-button">Download</button>
+        </form>
+    </div>
+    </main>
+
+    <script>
+        document.getElementById('download-button').addEventListener('click', async () => {
+    const input = document.getElementById('url-input').value.trim();
+    
+    if (!input) {
+        alert('Please enter a valid file path or URL.');
+        return;
+    }
+
+    try {
+        let response, blob, filename;
+
+        if (input.startsWith('http://') || input.startsWith('https://')) {
+            // Handle URL
+            response = await fetch(input);
+
+            if (!response.ok) {
+                throw new Error(`Network error: ${response.statusText}`);
+            }
+
+            blob = await response.blob();
+            const contentDisposition = response.headers.get('Content-Disposition');
+            filename = contentDisposition?.match(/filename="?(.+?)"?$/)?.[1] || input.split('/').pop();
+        } else {
+            // Handle local file path
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.style.display = 'none';
+            document.body.appendChild(fileInput);
+            fileInput.click();
+
+            await new Promise((resolve) => {
+                fileInput.onchange = resolve;
+            });
+
+            if (!fileInput.files.length) {
+                alert('No file selected.');
+                return;
+            }
+
+            const file = fileInput.files[0];
+            blob = file;
+            filename = file.name;
+            document.body.removeChild(fileInput);
+        }
+
+        // Create a download link and trigger the download
+        const blobURL = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = blobURL;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+
+        // Revoke the blob URL to free memory
+        URL.revokeObjectURL(blobURL);
+    } catch (error) {
+        alert(`Error downloading file: ${error.message}`);
+    }
+});
+    </script>
+
+    <script src="script.js"></script>
+</body>
+</html>
