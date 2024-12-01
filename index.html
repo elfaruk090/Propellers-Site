@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -8,15 +7,18 @@
     <link rel="shortcut icon" href="images/p alphabet.webp" type="image/x-icon">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-body {
-    font-family: Arial, Helvetica, sans-serif;
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
-}
 
+    <!-- Google Analitics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-31DEPGKJ5C"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-31DEPGKJ5C');
+</script>
+
+    <style>
 form {
     display: flex;
     justify-content: center;
@@ -47,6 +49,7 @@ main {
     width: 100%;
     display: flex;
     flex-direction: column;
+    background-color: aqua;
 }
 
 iframe, video {
@@ -67,6 +70,7 @@ iframe, video {
     right: 50px;
     border-radius: 50px;
     cursor: pointer;
+    display: none; /* Initially hidden */
 }
 
 /* Media Query for Responsive Design */
@@ -125,13 +129,13 @@ iframe, video {
         embedButton.addEventListener('click', () => {
             const videoUrl = videoUrlInput.value.trim(); // Get the media URL
 
-            // Hide both players initially
-            iframePlayer.style.display = 'none';
-            videoPlayer.style.display = 'none';
+        // Hide both players initially
+        iframePlayer.style.display = 'none';
+        videoPlayer.style.display = 'none';
 
-            // Check if the URL is a YouTube link
-            if (videoUrl.includes('youtube.com') || videoUrl.includes('youtu.be')) {
-                const videoId = extractYouTubeID(videoUrl);
+        // Check if the URL is a YouTube link
+        if (videoUrl.includes('youtube.com') || videoUrl.includes('youtu.be')) {
+        const videoId = extractYouTubeID(videoUrl);
                 if (videoId) {
                     iframePlayer.src = `https://www.youtube.com/embed/${videoId}?controls=1`;
                     iframePlayer.style.display = 'block';
@@ -162,20 +166,17 @@ iframe, video {
             return match ? match[1] : null;
         }
 
-
-
-
+        //For Hiden Download button
         const inputField = document.getElementById('videoUrl');
-const downloadButton = document.getElementById('downloadButton');
+        const downloadButton = document.getElementById('downloadButton');
 
-inputField.addEventListener('input', () => {
-    if (inputField.checkValidity()) {
+        inputField.addEventListener('input', () => {
+        if (inputField.checkValidity()) {
         downloadButton.style.display = 'block'; // Show button when input is valid
-    } else {
+        } else {
         downloadButton.style.display = 'none'; // Hide button otherwise
-    }
-});
-
+        }
+        });
     </script>
 
     <script src="script.js"></script>
