@@ -9,5 +9,5 @@ openButon.addEventListener('click', () => {
 
 // Close Sidebar
 closeButton.addEventListener ('click', () => {
-    sidebar.style.left = '-300px'; // Move Sidebar Out Of view
+    sidebar.style.left = '-250px'; // Move Sidebar Out Of view
 });

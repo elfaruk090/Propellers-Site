@@ -60,28 +60,47 @@
         }
         form button {
             width: 100%;
-            padding: 13px;
+            padding: 10px;
             margin: 20px auto;
             border-radius: 5px;
             color: white;
             background-color: green;
             font-size: 18px;
-            cursor: pointer;
+            opacity: 0.8;
+            pointer-events: none;
         }
         form button:active {
             background-color: darkred;
         }
-
-        /* Mobile Screen */
-        @media (max-width: 720px) {
-            .container {
-                width: 65%;
-            }
+        input:valid ~ button{
+            opacity: 1;
+            pointer-events: auto;
+            cursor: pointer;
         }
 
+        /* Mobile Large Screen */
+        @media (max-width: 720px) {
+            .container {
+            background-color: blue;
+            margin: auto;
+            padding: 20px;
+            width: 70%;
+            height: auto;
+            box-shadow: 10px 10px 5px rgba(0, 0, 0, 0.7);
+            border-radius: 10px;
+        }
+        }
+
+        /*Mobile Screen*/
         @media (max-width: 580px) {
             .container {
-                width: 85%;
+            background-color: blue;
+            margin: auto;
+            padding: 20px;
+            width: 100%;
+            height: auto;
+            box-shadow: 10px 10px 5px rgba(0, 0, 0, 0.7);
+            border-radius: 10px;
             }
         }
     </style>
@@ -102,7 +121,7 @@
             <li><a href="page1.html"><i class="fas fa-download"></i> Files</a></li>
             <li><a href="#"><i class="fas fa-info-circle"></i> About Us</a></li>
             <li><a href="#"><i class="fas fa-shield-alt"></i> Privacy</a></li>
-            <li><a href="#"><i class="fas fa-comment-alt"></i> Feedback</a></li>
+            <li><a href="page4.html"><i class="fas fa-comment-alt"></i> Feedback</a></li>
         </ul>
         </div>
     </header>
@@ -111,76 +130,56 @@
     <div class="container">
         <h1>Propellers</h1>
 
-        <form id="downloader-form">
+        <form id="downloaderForm">
             <h2>The Files Downloader:</h2>
-            <input type="url" id="url-input" placeholder="Paste File URL..." required>
+            <input type="url" name="fileInput" placeholder="Paste File URL..." id="fileInput" required>
             <br>
-            <button type="button" id="download-button">Download</button>
+            <button type="button" id="downloadButton">Download File</button>
         </form>
+        
     </div>
     </main>
 
     <script>
-        document.getElementById('download-button').addEventListener('click', async () => {
-    const input = document.getElementById('url-input').value.trim();
-    
-    if (!input) {
-        alert('Please enter a valid file path or URL.');
-        return;
-    }
+        const fileInput = document.getElementById("fileInput");
+const downloadBtn = document.getElementById("downloadButton");
 
-    try {
-        let response, blob, filename;
-
-        if (input.startsWith('http://') || input.startsWith('https://')) {
-            // Handle URL
-            response = await fetch(input);
-
-            if (!response.ok) {
-                throw new Error(`Network error: ${response.statusText}`);
-            }
-
-            blob = await response.blob();
-            const contentDisposition = response.headers.get('Content-Disposition');
-            filename = contentDisposition?.match(/filename="?(.+?)"?$/)?.[1] || input.split('/').pop();
-        } else {
-            // Handle local file path
-            const fileInput = document.createElement('input');
-            fileInput.type = 'file';
-            fileInput.style.display = 'none';
-            document.body.appendChild(fileInput);
-            fileInput.click();
-
-            await new Promise((resolve) => {
-                fileInput.onchange = resolve;
-            });
-
-            if (!fileInput.files.length) {
-                alert('No file selected.');
-                return;
-            }
-
-            const file = fileInput.files[0];
-            blob = file;
-            filename = file.name;
-            document.body.removeChild(fileInput);
-        }
-
-        // Create a download link and trigger the download
-        const blobURL = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = blobURL;
-        a.download = filename;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-
-        // Revoke the blob URL to free memory
-        URL.revokeObjectURL(blobURL);
-    } catch (error) {
-        alert(`Error downloading file: ${error.message}`);
+downloadBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    const fileUrl = fileInput.value.trim(); // Get the input value and trim whitespace
+    if (fileUrl) {
+        downloadBtn.innerText = "Downloading File...";
+        fetchFile(fileUrl);
+    } else {
+        alert("Please enter a valid URL.");
     }
 });
+
+function fetchFile(url) {
+    fetch(url)
+        .then((res) => {
+            if (!res.ok) {
+                throw new Error(`HTTP error! status: ${res.status}`);
+            }
+            return res.blob();
+        })
+        .then((file) => {
+            let tempUrl = URL.createObjectURL(file); // Pass the blob to createObjectURL
+            let aTag = document.createElement("a");
+            aTag.href = tempUrl;
+            aTag.download = url.split("/").pop(); // Extract file name from URL
+            document.body.appendChild(aTag);
+            aTag.click();
+            aTag.remove();
+            URL.revokeObjectURL(tempUrl); // Revoke the temporary URL
+            downloadBtn.innerText = "Download File"; // Reset button text
+        })
+        .catch(() => {
+            downloadBtn.innerText = "Download File";
+            alert("Failed to Download File!");
+        });
+}
+
     </script>
 
     <script src="script.js"></script>

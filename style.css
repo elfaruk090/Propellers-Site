@@ -22,10 +22,10 @@ header{
 #sidebar{
     position: fixed;
     background-color: grey;
-    width: 250px;
+    width: 200px;
     height: 100%;
     top: 0;
-    left: -300px;
+    left: -250px;
     color: blue;
     padding: 20px;
     overflow: hidden;
